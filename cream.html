@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frosty Delight - Premium Ice Cream</title>
+    <style>
+        /* --- Enhanced Premium Blue Color Palette --- */
+        :root {
+            --primary-blue: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-blue: #60a5fa;
+            --dark-blue: #0f172a;
+            --nav-blue: rgba(239, 246, 255, 0.95);
+            --bg-blue: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(37, 99, 235, 0.1);
+            --shadow-hover: 0 25px 50px -12px rgba(37, 99, 235, 0.25);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-blue);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Navigation --- */
+        .nav {
+            background: var(--nav-blue);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-blue);
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        /* --- Page Routing System --- */
+        .page-view {
+            display: none;
+            animation: slideUp 0.4s ease-out;
+            flex: 1;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Header & Hero --- */
+        .hero {
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.8), rgba(37, 99, 235, 0.6)), 
+                        url('https://images.unsplash.com/photo-1558500445-66258f1a0e10?q=80&w=1200&auto=format&fit=crop') center/cover;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 700px;
+        }
+
+        /* --- Layout Containers --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 3rem;
+            font-weight: 800;
+        }
+
+        /* --- Grid Systems --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin: 0.5rem 0 1rem;
+        }
+
+        /* --- Forms & Buttons --- */
+        .btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .cart-container, .order-form-container {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        /* --- Modals & Alerts --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        #custom-alert {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: none;
+            z-index: 3000;
+        }
+
+        .form-group { margin-bottom: 1.2rem; text-align: left; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.8rem; border: 2px solid #e2e8f0; border-radius: 10px;
+        }
+
+        .footer {
+            background: var(--dark-blue);
+            color: #94a3b8;
+            padding: 3rem 1rem;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="logo" onclick="navigateTo('home')">🍦 Frosty Delight</div>
+        <div class="nav-links">
+            <a href="#" onclick="navigateTo('home')" id="link-home">Home</a>
+            <a href="#" onclick="navigateTo('menu')" id="link-menu">Menu</a>
+            <a href="#" onclick="navigateTo('cart')" id="link-cart">Cart (<span id="cart-count">0</span>)</a>
+            <a href="#" onclick="navigateTo('order')" id="link-order">Order Now</a>
+            <button onclick="openLoginModal()" id="loginBtn" style="border: none; background: var(--primary-blue); color: white; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: 600;">Login</button>
+        </div>
+    </nav>
+
+    <!-- PAGE: HOME -->
+    <main id="page-home" class="page-view active">
+        <section class="hero">
+            <div class="hero-content">
+                <h2 style="font-size: 3rem; margin-bottom: 1rem;">Nainital's Finest Ice Cream</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">Crafted with passion, served with love. Discover our artisan flavors today.</p>
+                <button class="btn" onclick="navigateTo('menu')" style="width: auto; padding: 1rem 2.5rem;">Explore Menu</button>
+            </div>
+        </section>
+        <div class="container">
+            <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+                <h2 class="section-title">Why Choose Us?</h2>
+                <p>We use 100% organic local dairy and seasonal fruits to create flavors that dance on your tongue. From the classic Vanilla to our signature Himalayan Berry, every scoop is a masterpiece.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: MENU -->
+    <main id="page-menu" class="page-view">
+        <div class="container">
+            <h2 class="section-title">Our Menu</h2>
+            <div class="menu-grid" id="menu-items">
+                <!-- Menu injected by JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: CART -->
+    <main id="page-cart" class="page-view">
+        <div class="container">
+            <h2 class="section-title">Your Cart</h2>
+            <div class="cart-container">
+                <div id="cart-items">
+                    <p style="text-align: center; color: var(--text-light);">Your cart is empty.</p>
+                </div>
+                <div style="margin-top: 2rem; border-top: 2px solid #f1f5f9; padding-top: 1rem; text-align: right;">
+                    <h3 id="cart-total" style="font-size: 1.8rem; color: var(--primary-blue);">Total: ₹0</h3>
+                    <button class="btn" onclick="navigateTo('order')" style="width: auto; margin-top: 1rem;">Proceed to Order</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PAGE: ORDER NOW -->
+    <main id="page-order" class="page-view">
+        <div class="container">
+            <h2 class="section-title">Checkout</h2>
+            <div class="order-form-container">
+                <form id="orderForm" onsubmit="handleOrder(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Delivery Address</label>
+                        <textarea rows="3" required placeholder="Full address in Nainital"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select id="paymentMethod" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 2px solid #e2e8f0;">
+                            <option value="COD">Cash on Delivery</option>
+                            <option value="UPI">UPI / Scan QR</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn" style="height: 55px; font-size: 1.1rem; margin-top: 1rem;">Place Order Now</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1rem;">Login</h2>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="loginRole" style="width:100%; padding: 8px; margin-bottom: 10px;">
+                    <option value="customer">Customer</option>
+                    <option value="shopkeeper">Shopkeeper</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Email">
+            </div>
+            <button class="btn" onclick="closeLoginModal()">Sign In</button>
+            <button onclick="closeLoginModal()" style="background: none; border: none; margin-top: 10px; color: var(--text-light); cursor: pointer;">Cancel</button>
+        </div>
+    </div>
+
+    <div id="qrModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Scan & Pay</h3>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=anjubhatt532@oksbi" style="margin: 20px 0;">
+            <p>UPI: anjubhatt532@oksbi</p>
+            <button class="btn" onclick="finalizeOrder()">I've Paid</button>
+        </div>
+    </div>
+
+    <div id="custom-alert">Item added to cart!</div>
+
+    <footer class="footer">
+        <p><strong>Frosty Delight</strong> | Mall Road, Nainital</p>
+        <p>+91 7248003303</p>
+    </footer>
+
+    <script>
+        const iceCreams = [
+            { id: 1, name: "Vanilla Cloud", price: 80, img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&q=80" },
+            { id: 2, name: "Velvet Chocolate", price: 100, img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&q=80" },
+            { id: 3, name: "Strawberry Silk", price: 90, img: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?w=400&q=80" },
+            { id: 4, name: "Butterscotch Crunch", price: 110, img: "https://images.unsplash.com/photo-1488900128323-21503983a07e?w=400&q=80" },
+            { id: 5, name: "Royal Mango", price: 95, img: "https://images.unsplash.com/photo-1580915411954-282cb1b0d780?w=400&q=80" },
+            { id: 7, name: "Midnight Current", price: 120, img: "https://images.unsplash.com/photo-1560008581-09826d1de69e?w=400&q=80" }
+        ];
+
+        let cart = [];
+
+        // --- NAVIGATION ENGINE ---
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            // Remove active link styles
+            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            
+            // Show requested page
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('link-' + pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // --- MENU LOGIC ---
+        function loadMenu() {
+            const menuDiv = document.getElementById('menu-items');
+            menuDiv.innerHTML = iceCreams.map(item => `
+                <div class="card">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="card-body">
+                        <h3>${item.name}</h3>
+                        <div class="price">₹${item.price}</div>
+                        <button class="btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const item = iceCreams.find(i => i.id === id);
+            const exists = cart.find(i => i.id === id);
+            if(exists) exists.qty++;
+            else cart.push({...item, qty: 1});
+            
+            updateCartUI();
+            showToast(`${item.name} added!`);
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cart-items');
+            const totalDisplay = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+            
+            let count = 0;
+            let total = 0;
+
+            if(cart.length === 0) {
+                cartList.innerHTML = `<p style="text-align: center; color: var(--text-light); padding: 20px;">Your cart is empty.</p>`;
+            } else {
+                cartList.innerHTML = cart.map(item => {
+                    count += item.qty;
+                    total += (item.price * item.qty);
+                    return `
+                        <div class="cart-item">
+                            <span><strong>${item.name}</strong> x ${item.qty}</span>
+                            <span>₹${item.price * item.qty}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            totalDisplay.innerText = `Total: ₹${total}`;
+            cartCount.innerText = count;
+        }
+
+        // --- ORDER HANDLING ---
+        function handleOrder(e) {
+            e.preventDefault();
+            if(cart.length === 0) {
+                alert("Cart is empty!");
+                return;
+            }
+            const method = document.getElementById('paymentMethod').value;
+            if(method === 'UPI') {
+                document.getElementById('qrModal').style.display = 'flex';
+            } else {
+                finalizeOrder();
+            }
+        }
+
+        function finalizeOrder() {
+            alert("Order Placed Successfully! 🍦 Check your email for confirmation.");
+            cart = [];
+            updateCartUI();
+            document.getElementById('orderForm').reset();
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+            navigateTo('home');
+        }
+
+        // --- MODALS & ALERTS ---
+        function openLoginModal() { document.getElementById('loginModal').style.display = 'flex'; }
+        function closeLoginModal() { document.getElementById('loginModal').style.display = 'none'; }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('custom-alert');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+
+        window.onload = () => {
+            loadMenu();
+            navigateTo('home'); // Default start page
+        };
+    </script>
+</body>
+</html>
